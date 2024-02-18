@@ -4,15 +4,19 @@ document.addEventListener('DOMContentLoaded', function(){
 
   document.addEventListener(RENDER_EVENT, function () {
     // console.log(todos);
-    const unCompletedTODOList = document.getElementById('todos');
-    unCompletedTODOList.innerHTML = '';
+    const uncompletedTODOList = document.getElementById('todos');
+    uncompletedTODOList.innerHTML = '';
+
+    const completedTodoList = document.getElementById('completed-todos');
+    completedTodoList.innerHTML = '';
 
     for (const todoItem of todos){
       const todoElement = makeTodo(todoItem);
       if (!todoItem.isCompleted) {
-        unCompletedTODOList.append(todoElement);
+        uncompletedTODOList.append(todoElement);
+      } else{
+        completedTodoList.append(todoElement);
       }
-
     }
   });
 
@@ -110,5 +114,33 @@ document.addEventListener('DOMContentLoaded', function(){
 
     return null;
   }
+
+  function removeTaskFromCompleted(todoId){
+    const todoTarget = findTodoIndex(todoId);
+
+    if (todoTarget === -1) return;
+
+    todos.splice(todoTarget, 1);
+    document.dispatchEvent(new Event(RENDER_EVENT));
+  }
+
+  function undoTaskFromCompleted(todoId){
+    const todoTarget = findTodo(todoId);
+
+    if (todoTarget == null) return;
+
+    todoTarget.isCompleted = false;
+    document.dispatchEvent(new Event(RENDER_EVENT));
+  }
+
+   function findTodoIndex(todoId){
+    for (const index in todos){
+      if (todos[index].id === todoId) {
+        return index;
+      }
+    }
+
+    return -1;
+   }
 });
 
