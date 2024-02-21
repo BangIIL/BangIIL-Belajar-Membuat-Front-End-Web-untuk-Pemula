@@ -191,8 +191,13 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener(SAVED_EVENT, () => {
-  console.log('Data berhasil di simpan.');
+  alert('Data berhasil disimpan');
+  refreshPage();
 });
+
+function refreshPage() {
+  window.location.reload();
+}
 
 document.addEventListener(RENDER_EVENT, function () {
   const uncompletedTODOList = document.getElementById('todos');
